@@ -179,3 +179,7 @@ size_callback :: proc "c" (window: glfw.WindowHandle, width, height: i32) {
 	// Set the OpenGL viewport size
 	gl.Viewport(0, 0, width, height)
 }
+
+load_textfile_and_print :: proc() {
+	
+}
