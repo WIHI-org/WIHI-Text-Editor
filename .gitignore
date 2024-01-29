@@ -1,7 +1,10 @@
-vs
+.vs
+.task
+
+dependencies/imgui/imgui
+bin
+
 .exe
 ols.json
 test.odin
-bin
 imgui.ini
-dependencies/imgui/imgui
