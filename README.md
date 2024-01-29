@@ -2,7 +2,7 @@
 Our take on creating an  IDE
 
 # SETUP
-To run dev with dearimgui clone contents of this repository in dependencies/imgui folder and follow setup steps 
+To run execute build.py in dependencies/imgui and follow [setup steps](https://gitlab.com/L-4/odin-imgui) from that repo []
 Add this to your ols.json in collections section
 ```
 {
@@ -14,3 +14,6 @@ Refer to imgui_test for usage
 
 To run use you can use taskfile yaml tool ``` task imgui_test ```
 
+# Dependencies
+Odin-imgui from L-4
+https://gitlab.com/L-4/odin-imgui

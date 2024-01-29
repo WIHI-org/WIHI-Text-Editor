@@ -1,0 +1,24 @@
+version: 3
+
+tasks:
+  build:
+
+  imgui_test:
+    deps:
+      - build_imgui_test
+    cmds:
+      - bin/imgui_test
+    method: none
+    silent: true
+  
+  build_imgui_test:
+    cmds:
+      - odin build imgui_test/imgui_test.odin -file -out:bin/imgui_test.exe -o:speed -collection:dependencies=dependencies
+    sources:
+      - imgui_test/**/*.odin
+      - dependencies/imgui/**/*.odin
+    generates:
+      - bin/imgui_test
+    silent: true
+
+interval: 100ms
