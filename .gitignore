@@ -2,3 +2,6 @@ vs
 .exe
 ols.json
 test.odin
+bin
+imgui.ini
+dependencies/imgui/imgui
