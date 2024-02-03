@@ -1,24 +1,47 @@
 version: 3
 
 tasks:
-  build:
-
-  imgui_test:
+  # building task for imgui test
+  imgui_build_test:
     deps:
       - build_imgui_test
-    cmds:
-      - bin/imgui_test
-    method: none
-    silent: true
-  
+    method: checksum
+
   build_imgui_test:
     cmds:
       - odin build imgui_test/imgui_test.odin -file -out:bin/imgui_test.exe -o:speed -collection:dependencies=dependencies
     sources:
       - imgui_test/**/*.odin
       - dependencies/imgui/**/*.odin
+      - bin/**/*.exe
     generates:
-      - bin/imgui_test
+      - bin/imgui_test.exe
     silent: true
+
+  # run task for imgui test
+  imgui_run_test:
+    deps:
+      - run_imgui_test
+    method: none
+
+  run_imgui_test:
+    cmds:
+      - odin run imgui_test/imgui_test.odin -file -out:imgui_test/imgui_test.exe -collection:dependencies=dependencies
+    sources:
+      - imgui_test/**/*.odin
+      - dependencies/imgui/**/*.odin
+    generates:
+      - imgui_test/imgui_test.exe
+    silent: true
+
+  # normal production run
+  imgui_run:
+    cmds:
+      - odin run bin/**/*.exe -file -collection:dependencies=dependencies
+    method: checksum
+
+  fs_win:
+    cmds: 
+      - odin run examples/fs_single_win.odin -file -out:bin/fs_single_win.exe -collection:dependencies=dependencies
 
 interval: 100ms
