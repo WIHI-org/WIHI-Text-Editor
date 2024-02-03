@@ -9,7 +9,7 @@ tasks:
 
   build_imgui_test:
     cmds:
-      - odin build imgui_test/imgui_test.odin -file -out:bin/imgui_test.exe -collection:dependencies=dependencies
+      - odin build imgui_test/imgui_test.odin -file -out:bin/imgui_test.exe -o:speed -collection:dependencies=dependencies
     sources:
       - imgui_test/**/*.odin
       - dependencies/imgui/**/*.odin

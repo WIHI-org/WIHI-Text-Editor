@@ -1,9 +1,15 @@
+# folders
 .vs
 .task
-
 dependencies/imgui/imgui
+dependencies/imgui/imgui_windows_x64.lib
 imgui_test
+bin/**/*.exe
+bin/
 
+# files
 .exe
 ols.json
+test.odin
 imgui.ini
+imgui.txt
