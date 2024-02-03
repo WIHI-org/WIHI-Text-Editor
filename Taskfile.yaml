@@ -5,7 +5,7 @@ tasks:
   imgui_build_test:
     deps:
       - build_imgui_test
-    method: timestamp
+    method: checksum
 
   build_imgui_test:
     cmds:
@@ -38,7 +38,7 @@ tasks:
   imgui_run:
     cmds:
       - odin run bin/**/*.exe -file -collection:dependencies=dependencies
-    method: timestamp
+    method: checksum
 
   fs_win:
     cmds: 
