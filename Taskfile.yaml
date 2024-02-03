@@ -21,4 +21,22 @@ tasks:
       - bin/imgui_test
     silent: true
 
+  proto_main:
+    deps:
+      - build_proto_main
+    cmds:
+      - bin/proto_main
+    method: none
+    silent: true
+  
+  build_proto_main:
+    cmds:
+      - odin build proto_main/proto_main.odin -file -out:bin/proto_main.exe -o:speed -collection:dependencies=dependencies
+    sources:
+      - proto_main/**/*.odin
+      - dependencies/imgui/**/*.odin
+    generates:
+      - bin/proto_main
+    silent: true
+
 interval: 100ms
