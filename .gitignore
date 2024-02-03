@@ -8,3 +8,5 @@ bin
 [ols.json]
 test.odin
 imgui.ini
+ols.json
+ols.*
