@@ -1,9 +1,10 @@
-package main
+package file_read
 
 import "core:fmt"
 import "core:os"
 import "core:strings"
 import "core:bufio"
+
 main :: proc() {
   semi_hand_written()
   iterator_aproach()
@@ -65,7 +66,7 @@ buffer_aproach :: proc() {
 
 	r: bufio.Reader
 	buffer: [1024]byte
-	bufio.reader_init_with_buf(&r, {os.stream_from_handle(f)}, buffer[:])
+	bufio.reader_init_with_buf(&r, os.stream_from_handle(f), buffer[:])
 	// NOTE: bufio.reader_init can be used if you want to use a dynamic backing buffer
 	defer bufio.reader_destroy(&r)
 

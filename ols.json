@@ -4,6 +4,10 @@
         {
             "name": "core",
             "path": "C:\\Program Files\\Odin\\core"
+        },
+        {
+            "name": "dependencies",
+            "path": "./dependencies"
         }
     ],
     "enable_document_symbols": true,

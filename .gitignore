@@ -2,9 +2,8 @@
 .task
 
 dependencies/imgui/imgui
-bin
+imgui_test
 
 .exe
 ols.json
-test.odin
 imgui.ini
