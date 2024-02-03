@@ -5,6 +5,6 @@ dependencies/imgui/imgui
 bin
 
 .exe
-ols.json
+[ols.json]
 test.odin
 imgui.ini
