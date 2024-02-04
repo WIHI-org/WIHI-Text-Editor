@@ -63,7 +63,7 @@ main :: proc() {
 		imgui_impl_glfw.NewFrame()
 		imgui.NewFrame()
 
-		imgui.ShowDemoWindow(nil)
+		//imgui.ShowDemoWindow(nil)
 
 		// ui code
 
@@ -71,7 +71,7 @@ main :: proc() {
 		imgui.SetNextWindowPos({0, 0}, .Appearing)
 		imgui.SetNextWindowSize(viewport.Size, .Appearing)
 
-		if imgui.Begin("Fullscreen single windows", nil, {.NoCollapse, .NoMove, .MenuBar}) {
+		if imgui.Begin("Fullscreen single windows", nil, {.NoCollapse, .NoMove, .MenuBar, .NoResize }) {
 			if imgui.BeginMenuBar() {
 				if imgui.BeginMenu("File") {
 					if imgui.MenuItem("Read a file") {
