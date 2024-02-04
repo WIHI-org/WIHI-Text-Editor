@@ -44,4 +44,16 @@ tasks:
     cmds: 
       - odin run examples/fs_single_win.odin -file -out:bin/fs_single_win.exe -collection:dependencies=dependencies
 
+  main:
+    cmds: 
+      - odin run src/main.odin -file -out:bin/main.exe -collection:dependencies=dependencies -collection:src=src
+  
+  main_release:
+    cmds:
+      - odin run src/main.odin -file -out:bin/main.exe -collection:dependencies=dependencies -collection:src=src -o:speed
+  
+  main_experimental:
+    cmds:
+      - odin run src/main.odin -file -out:bin/main.exe -collection:dependencies=dependencies -collection:src=src -o:aggressive
+
 interval: 100ms
