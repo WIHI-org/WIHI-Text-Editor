@@ -6,7 +6,9 @@ package fs_single_win
 // (for updating: based on https://github.com/ocornut/imgui/blob/96839b445e32e46d87a44fd43a9cdd60c806f7e1/examples/example_glfw_opengl3/main.cpp)
 
 import "core:fmt"
+import "core:strings"
 import u "src:utils"
+import f "src:files"
 import imgui "dependencies:imgui"
 import "dependencies:imgui/imgui_impl_glfw"
 import "dependencies:imgui/imgui_impl_opengl3"
@@ -32,7 +34,7 @@ main :: proc() {
 	gl.load_up_to(3, 2, proc(p: rawptr, name: cstring) {
 		(cast(^rawptr)p)^ = glfw.GetProcAddress(name)
 	})
-
+	content: string = ""
 	imgui.CHECKVERSION()
 	imgui.CreateContext(nil)
 	defer imgui.DestroyContext(nil)
@@ -75,7 +77,16 @@ main :: proc() {
 				if imgui.BeginMenu("File") {
 					if imgui.MenuItem("Read a file") {
 						path, ok := u.select_file_to_open()
-            fmt.println("Success: %t. Filepath: %s", ok, path)
+						if !ok {
+							// display some err
+							fmt.println("ERROR GETTING FILE FROM DIALOG!")
+						}
+						content, ok = f.read_file_by_lines_in_whole(path)
+						if (!ok) {
+							// display some err
+							fmt.printf("ERROR DURUING READING FILE")
+						}
+						fmt.println(content)
 					}
 					imgui.Separator()
 					if imgui.MenuItemEx("Exit", "Alt+F4", false, true) {
@@ -86,6 +97,11 @@ main :: proc() {
 				imgui.EndMenuBar()
 			}
 
+			c: cstring = ""
+			if content != "" {
+				c = strings.unsafe_string_to_cstring(content)
+			}
+			imgui.Text("%s", c)
 			if imgui.Button("The quit button in question") {
 				glfw.SetWindowShouldClose(window, true)
 			}
