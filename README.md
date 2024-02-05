@@ -8,6 +8,10 @@ Add this to your ols.json in collections section
 {
   "name":  "dependencies",
   "path": "./dependencies"
+},
+{
+  "name": "src",
+  "path": "./src"
 }
 ```
 Refer to imgui_test for usage
