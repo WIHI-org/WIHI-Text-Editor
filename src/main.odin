@@ -19,8 +19,7 @@ package wihi_main
 import "core:fmt"
 import "core:strings"
 
-import f "src:files"
-import u "src:utils"
+import c "src:components"
 
 import imgui "dependencies:imgui"
 import "dependencies:imgui/imgui_impl_glfw"
@@ -30,8 +29,7 @@ import gl "vendor:OpenGL"
 import "vendor:glfw"
 
 main :: proc() {
-	show_sys_info: bool = false
-
+	p_open: bool = true
 	assert(cast(bool)glfw.Init())
 	defer glfw.Terminate()
 	glfw.WindowHint(glfw.CONTEXT_VERSION_MAJOR, 3)
@@ -49,7 +47,6 @@ main :: proc() {
 	gl.load_up_to(3, 2, proc(p: rawptr, name: cstring) {
 		(cast(^rawptr)p)^ = glfw.GetProcAddress(name)
 	})
-	content: string = ""
 	imgui.CHECKVERSION()
 	imgui.CreateContext(nil)
 	defer imgui.DestroyContext(nil)
@@ -88,53 +85,14 @@ main :: proc() {
 			   nil,
 			   {.NoCollapse, .NoMove, .MenuBar, .NoResize},
 		   ) {
-			if imgui.BeginMenuBar() {
-				if imgui.BeginMenu("File") {
-					if imgui.MenuItem("Read a file") {
-						path, ok := u.select_file_to_open()
-						if !ok {
-							// display some err
-							fmt.println("ERROR GETTING FILE FROM DIALOG")
-						}
-						content, ok = f.read_file_by_lines_in_whole(path)
-						if (!ok) {
-							// display some err
-							fmt.printf("ERROR DURUING READING FILE")
-						}
-						fmt.println(content)
-					}
-					imgui.Separator()
-					if imgui.MenuItemEx("Exit", "Alt+F4", false, true) {
-						glfw.SetWindowShouldClose(window, true)
-					}
-					imgui.EndMenu()
-				}
-				if imgui.BeginMenu("Help") {
-					if imgui.MenuItem("About system") {
-						if !imgui.IsAnyMouseDown() {
-							show_sys_info = true
-						}
-					}
-					imgui.EndMenu()
-				}
-				imgui.EndMenuBar()
-			}
-
-			c: cstring = ""
-			if content != "" {
-				c = strings.unsafe_string_to_cstring(content)
-			}
-			imgui.Text("%s", c)
-
-			if show_sys_info != false {
-				u.sys_info()
-			}
+				c.menu_bar(&p_open)
 		}
 		imgui.End()
 
 		// end of ui code
 
 		imgui.Render()
+		glfw.SetWindowShouldClose(window, !p_open)
 		display_w, display_h := glfw.GetFramebufferSize(window)
 		gl.Viewport(0, 0, display_w, display_h)
 		gl.ClearColor(0, 0, 0, 1)
