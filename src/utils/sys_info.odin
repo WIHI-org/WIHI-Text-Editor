@@ -6,7 +6,7 @@ import imgui "dependencies:imgui"
 
 sys_info :: proc() {
 	io := imgui.GetIO()
-	fps := u32(io.Framerate)
+	fps := cast(u32)io.Framerate
 
 	imgui.Text("Odin:  %s\n\n", ODIN_VERSION)
 	imgui.Text("OS:    %s\n", si.os_version.as_string)
