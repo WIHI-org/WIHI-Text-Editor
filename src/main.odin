@@ -129,7 +129,7 @@ main :: proc() {
 			// Sys info modal popup
 			if show_sys_info != false {
 				imgui.OpenPopup("System details", imgui.PopupFlags_None)
-				center := imgui.Viewport_GetCenter(viewport) / 1.5
+				center := imgui.Viewport_GetCenter(viewport) / 1.5 // dividing with 1.5 to center the modal in the middle of the win
 				imgui.SetNextWindowPos(center, .Appearing)
 
 				if imgui.BeginPopupModal("System details", nil, {.AlwaysAutoResize}) {
