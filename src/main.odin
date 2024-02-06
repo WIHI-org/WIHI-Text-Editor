@@ -133,7 +133,7 @@ main :: proc() {
 				imgui.SetNextWindowPos(center, .Appearing)
 
 				if imgui.BeginPopupModal("System details", nil, {.AlwaysAutoResize}) {
-					comp.sys_info(io^)
+					comp.sys_info(io)
 					if imgui.ButtonEx("Close", {120, 0}) {
 						show_sys_info = false
 					}
