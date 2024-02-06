@@ -1,11 +1,9 @@
-package utils
+package components
 
 import si "core:sys/info"
-
 import imgui "dependencies:imgui"
 
-sys_info :: proc() {
-	io := imgui.GetIO()
+sys_info :: proc(io: imgui.IO) {
 	fps := cast(u32)io.Framerate
 
 	imgui.Text("Odin:  %s\n\n", ODIN_VERSION)
