@@ -1,4 +1,15 @@
-package fs_single_win
+/* 
+    Main project name (to be changed)
+ 
+    Current WIHI Code Editor
+
+    New ideas:
+    --------------
+    Trindent Code Editor
+    Poseidon Code Editor
+    ...
+*/
+package wihi_main
 
 // This is an example of using the bindings with GLFW and OpenGL 3.
 // For a more complete example with comments, see:
@@ -7,8 +18,10 @@ package fs_single_win
 
 import "core:fmt"
 import "core:strings"
-import u "src:utils"
+
 import f "src:files"
+import u "src:utils"
+
 import imgui "dependencies:imgui"
 import "dependencies:imgui/imgui_impl_glfw"
 import "dependencies:imgui/imgui_impl_opengl3"
@@ -17,6 +30,8 @@ import gl "vendor:OpenGL"
 import "vendor:glfw"
 
 main :: proc() {
+	show_sys_info: bool = false
+
 	assert(cast(bool)glfw.Init())
 	defer glfw.Terminate()
 	glfw.WindowHint(glfw.CONTEXT_VERSION_MAJOR, 3)
@@ -42,9 +57,6 @@ main :: proc() {
 	io.ConfigFlags += {.NavEnableKeyboard, .NavEnableGamepad}
 	when imgui.IMGUI_BRANCH == "docking" {
 		io.ConfigFlags += {.DockingEnable}
-		// Seperates windows into two instead of one whole
-		// io.ConfigFlags += {.ViewportsEnable}
-
 		style := imgui.GetStyle()
 		style.WindowRounding = 0
 		style.Colors[imgui.Col.WindowBg].w = 1
@@ -63,7 +75,6 @@ main :: proc() {
 		imgui_impl_opengl3.NewFrame()
 		imgui_impl_glfw.NewFrame()
 		imgui.NewFrame()
-
 		//imgui.ShowDemoWindow(nil)
 
 		// ui code
@@ -72,14 +83,18 @@ main :: proc() {
 		imgui.SetNextWindowPos({0, 0}, .Appearing)
 		imgui.SetNextWindowSize(viewport.Size, .Appearing)
 
-		if imgui.Begin("Fullscreen single windows", nil, {.NoCollapse, .NoMove, .MenuBar, .NoResize }) {
+		if imgui.Begin(
+			   "Fullscreen single windows",
+			   nil,
+			   {.NoCollapse, .NoMove, .MenuBar, .NoResize},
+		   ) {
 			if imgui.BeginMenuBar() {
 				if imgui.BeginMenu("File") {
 					if imgui.MenuItem("Read a file") {
 						path, ok := u.select_file_to_open()
 						if !ok {
 							// display some err
-							fmt.println("ERROR GETTING FILE FROM DIALOG!")
+							fmt.println("ERROR GETTING FILE FROM DIALOG")
 						}
 						content, ok = f.read_file_by_lines_in_whole(path)
 						if (!ok) {
@@ -94,6 +109,14 @@ main :: proc() {
 					}
 					imgui.EndMenu()
 				}
+				if imgui.BeginMenu("Help") {
+					if imgui.MenuItem("About system") {
+						if !imgui.IsAnyMouseDown() {
+							show_sys_info = true
+						}
+					}
+					imgui.EndMenu()
+				}
 				imgui.EndMenuBar()
 			}
 
@@ -102,8 +125,9 @@ main :: proc() {
 				c = strings.unsafe_string_to_cstring(content)
 			}
 			imgui.Text("%s", c)
-			if imgui.Button("The quit button in question") {
-				glfw.SetWindowShouldClose(window, true)
+
+			if show_sys_info != false {
+				u.sys_info()
 			}
 		}
 		imgui.End()

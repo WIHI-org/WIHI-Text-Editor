@@ -1,4 +1,4 @@
-package fs_single_win
+package examples
 
 // This is an example of using the bindings with GLFW and OpenGL 3.
 // For a more complete example with comments, see:
@@ -41,7 +41,7 @@ main :: proc() {
 	io.ConfigFlags += {.NavEnableKeyboard, .NavEnableGamepad}
 	when imgui.IMGUI_BRANCH == "docking" {
 		io.ConfigFlags += {.DockingEnable}
-		// Seperates windows into two instead of one whole
+		// Seperates main .exe window and imgui into 2 individual ones instead one whole
 		// io.ConfigFlags += {.ViewportsEnable}
 
 		style := imgui.GetStyle()
@@ -67,31 +67,31 @@ main :: proc() {
 
 		// ui code
 
+		/* 
+            SetNextWindowsPos and SetNextWIndowSize are main settings for a fullscreen win display
+            on .exe load, or else it'll be window in a window aka docking (default state for imgui display)
+            
+            ( .NoCollapse, .NoMove, .NoResize ) are "important" arguments for imgui.Begin() func to define
+            proper fullscreen behaviour, otherwise fullscreen window will behave like "windowed setting"
+
+            Code line "io.ConfigFlags += {.ViewportsEnable}" must be commented out or removed for it will prevent
+            2 windows popping out seperately, one normal .exe and other imgui window, commenting out or removing it
+            will set imgui behavior to render it's window inside normal .exe window
+         */
 		viewport := imgui.GetMainViewport()
 		imgui.SetNextWindowPos({0, 0}, .Appearing)
 		imgui.SetNextWindowSize(viewport.Size, .Appearing)
 
-		if imgui.Begin("Fullscreen single windows", nil, {.NoCollapse, .NoMove, .MenuBar, .NoResize }) {
+		if imgui.Begin(
+			   "Fullscreen single windows",
+			   nil,
+			   {.NoCollapse, .NoMove, .MenuBar, .NoResize},
+		   ) {
 			if imgui.BeginMenuBar() {
-				if imgui.BeginMenu("File") {
-					if imgui.MenuItem("Read a file") {
-						// insert file reading code
-
-						// if imgui.OpenPopup("popup_test", imgui.PopupFlags_NoOpenOverExistingPopup) {
-						// 	if imgui.BeginPopup("popup_test", imgui.WindowFlag.AlwaysAutoResize) { 
-						//         imgui.IsWindowAppearing()
-						// 		imgui.EndPopup()
-						// 	}
-						//     imgui.CloseCurrentPopup()
-						// }
-					}
-					imgui.Separator()
-					if imgui.MenuItemEx("Exit", "Alt+F4", false, true) {
-						glfw.SetWindowShouldClose(window, true)
-					}
-					imgui.EndMenu()
+				if imgui.MenuItemEx("Exit", "Alt+F4", false, true) {
+					glfw.SetWindowShouldClose(window, true)
 				}
-				imgui.EndMenuBar()
+				imgui.EndMenu()
 			}
 
 			if imgui.Button("The quit button in question") {
