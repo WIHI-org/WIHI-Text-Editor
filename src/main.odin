@@ -9,6 +9,7 @@
     Poseidon Code Editor
     ...
 */
+
 package wihi_main
 
 // This is an example of using the bindings with GLFW and OpenGL 3.
@@ -19,6 +20,7 @@ package wihi_main
 import "core:fmt"
 import "core:strings"
 
+import comp "src:components"
 import f "src:files"
 import u "src:utils"
 
@@ -75,7 +77,7 @@ main :: proc() {
 		imgui_impl_opengl3.NewFrame()
 		imgui_impl_glfw.NewFrame()
 		imgui.NewFrame()
-		//imgui.ShowDemoWindow(nil)
+		// imgui.ShowDemoWindow(nil)
 
 		// ui code
 
@@ -86,7 +88,7 @@ main :: proc() {
 		if imgui.Begin(
 			   "Fullscreen single windows",
 			   nil,
-			   {.NoCollapse, .NoMove, .MenuBar, .NoResize},
+			   {.NoCollapse, .NoMove, .MenuBar},
 		   ) {
 			if imgui.BeginMenuBar() {
 				if imgui.BeginMenu("File") {
@@ -109,11 +111,9 @@ main :: proc() {
 					}
 					imgui.EndMenu()
 				}
-				if imgui.BeginMenu("Help") {
-					if imgui.MenuItem("About system") {
-						if !imgui.IsAnyMouseDown() {
-							show_sys_info = true
-						}
+				if imgui.BeginMenu("About") {
+					if imgui.MenuItem("System") {
+						show_sys_info = true
 					}
 					imgui.EndMenu()
 				}
@@ -126,8 +126,19 @@ main :: proc() {
 			}
 			imgui.Text("%s", c)
 
+			// Sys info modal popup
 			if show_sys_info != false {
-				u.sys_info()
+				imgui.OpenPopup("System details", imgui.PopupFlags_None)
+				center := imgui.Viewport_GetCenter(viewport) / 1.5 // dividing with 1.5 to center the modal in the middle of the win
+				imgui.SetNextWindowPos(center, .Appearing)
+
+				if imgui.BeginPopupModal("System details", nil, {.AlwaysAutoResize}) {
+					comp.sys_info(io)
+					if imgui.ButtonEx("Close", {120, 0}) {
+						show_sys_info = false
+					}
+					imgui.EndPopup()
+				}
 			}
 		}
 		imgui.End()
