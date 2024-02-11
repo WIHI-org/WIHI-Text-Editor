@@ -2,14 +2,17 @@ package components
 
 import f "src:files"
 import u "src:utils"
+import m "."
+import "core:mem"
 
 import "core:fmt"
 import "core:strings"
 
 import imgui "dependencies:imgui"
-menu_bar :: proc(p_open: ^bool) {
-  show_sys_info: bool = false
-  content: string = ""
+content: string = ""
+show_sys_info: bool = false
+current_display: cstring = ""
+menu_bar :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]FileInfo) {
   if imgui.BeginMenuBar() {
     if imgui.BeginMenu("File") {
       if imgui.MenuItem("Read a file") {
@@ -23,7 +26,17 @@ menu_bar :: proc(p_open: ^bool) {
           // display some err
           fmt.printf("ERROR DURUING READING FILE")
         }
-        fmt.println(content)
+        fmt.printf(path)
+        i := strings.last_index(path, "\\")
+
+        f := FileInfo {
+          file_name = path[i:],
+          file_content = content,
+          path = path,
+        }
+        
+        append_elem(files_info, f)
+       
       }
       imgui.Separator()
       if imgui.MenuItemEx("Exit", "Alt+F4", false, true) {
@@ -41,14 +54,27 @@ menu_bar :: proc(p_open: ^bool) {
     }
     imgui.EndMenuBar()
   }
-
-  c: cstring = ""
-  if content != "" {
-    c = strings.unsafe_string_to_cstring(content)
+  
+  
+  for item in files_info {
+    fmt.println(item.file_content)
+    if imgui.BeginMenuBar() {
+      if (imgui.BeginMenu(strings.unsafe_string_to_cstring(item.file_name))) {
+          
+          current_display = strings.unsafe_string_to_cstring(item.file_content)
+          
+        imgui.EndMenu()
+      }
+      imgui.EndMenuBar()
+    }
   }
-  imgui.Text("%s", c)
+  //fmt.println(current_display)
+  if current_display != "" {
+    imgui.Text("%s",current_display)
+  }
+  
 
   if show_sys_info != false {
-    u.sys_info()
+    u.sys_info(io)
   }
 }

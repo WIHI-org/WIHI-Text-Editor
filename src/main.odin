@@ -7,6 +7,7 @@
     --------------
     Trindent Code Editor
     Poseidon Code Editor
+		Kratos Code Editor
     ...
 */
 package wihi_main
@@ -66,6 +67,9 @@ main :: proc() {
 	imgui_impl_opengl3.Init("#version 150")
 	defer imgui_impl_opengl3.Shutdown()
 
+	// This struct should never be freed or delete
+	files_info: [dynamic]c.FileInfo
+
 	for !glfw.WindowShouldClose(window) {
 		glfw.PollEvents()
 
@@ -80,17 +84,9 @@ main :: proc() {
 		imgui.SetNextWindowPos({0, 0}, .Appearing)
 		imgui.SetNextWindowSize(viewport.Size, .Appearing)
 
-		if imgui.Begin(
-			   "Fullscreen single windows",
-			   nil,
-			   {.NoCollapse, .NoMove, .MenuBar, .NoResize},
-		   ) {
-				c.menu_bar(&p_open)
-		}
-		imgui.End()
-
-		// end of ui code
-
+		// COMPONENTS ENTRY
+		c.main_entry(&p_open, io, &files_info)
+		
 		imgui.Render()
 		glfw.SetWindowShouldClose(window, !p_open)
 		display_w, display_h := glfw.GetFramebufferSize(window)
