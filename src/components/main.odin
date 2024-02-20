@@ -1,7 +1,8 @@
 package components
 
+import f "src:files"
 import "dependencies:imgui"
-main_entry :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]FileInfo) {
+main_entry :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]f.FileInfo) {
   if imgui.Begin(
     "Fullscreen single windows",
     nil,
@@ -12,8 +13,3 @@ main_entry :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]FileInfo)
   imgui.End()
 }
 
-FileInfo :: struct {
-	file_name: string,
-	path: string,
-	file_content: string,
-}

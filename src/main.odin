@@ -21,7 +21,7 @@ import "core:fmt"
 import "core:strings"
 
 import c "src:components"
-
+import f "src:files"
 import imgui "dependencies:imgui"
 import "dependencies:imgui/imgui_impl_glfw"
 import "dependencies:imgui/imgui_impl_opengl3"
@@ -68,7 +68,7 @@ main :: proc() {
 	defer imgui_impl_opengl3.Shutdown()
 
 	// This struct should never be freed or delete
-	files_info: [dynamic]c.FileInfo
+	files_info: [dynamic]f.FileInfo
 
 	for !glfw.WindowShouldClose(window) {
 		glfw.PollEvents()

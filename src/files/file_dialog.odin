@@ -1,4 +1,4 @@
-package utils
+package files
 
 import "core:strings"
 import win32 "core:sys/windows"

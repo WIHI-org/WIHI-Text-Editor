@@ -9,37 +9,18 @@ import "core:fmt"
 import "core:strings"
 
 import imgui "dependencies:imgui"
-content: string = ""
+
 show_sys_info: bool = false
 current_display: cstring = ""
-menu_bar :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]FileInfo) {
+menu_bar :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]f.FileInfo) {
   if imgui.BeginMenuBar() {
     if imgui.BeginMenu("File") {
       if imgui.MenuItem("Read a file") {
-        path, ok := u.select_file_to_open()
-        if !ok {
-          // display some err
-          fmt.println("ERROR GETTING FILE FROM DIALOG")
-        }
-        content, ok = f.read_file_by_lines_in_whole(path)
-        if (!ok) {
-          // display some err
-          fmt.printf("ERROR DURUING READING FILE")
-        }
-        fmt.printf(path)
-        i := strings.last_index(path, "\\")
-
-        f := FileInfo {
-          file_name = path[i:],
-          file_content = content,
-          path = path,
-        }
-        
-        append_elem(files_info, f)
-       
+        p, file_content, ok := f.open_file(files_info)
+        current_display = strings.unsafe_string_to_cstring(file_content)
       }
       imgui.Separator()
-      if imgui.MenuItemEx("Exit", "Alt+F4", false, true) {
+      if imgui.MenuItemEx("Exit", "Alt + F4", false, true) {
         p_open^ = false
       }
       imgui.EndMenu()
@@ -60,9 +41,12 @@ menu_bar :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]FileInfo) {
     fmt.println(item.file_content)
     if imgui.BeginMenuBar() {
       if (imgui.BeginMenu(strings.unsafe_string_to_cstring(item.file_name))) {
-          
-          current_display = strings.unsafe_string_to_cstring(item.file_content)
-          
+        current_display = strings.unsafe_string_to_cstring(item.file_content)
+        if (imgui.MenuItemEx("Close", "Ctrl + W",false, true)) {
+          u.close_tab(files_info, item.path)
+          current_display = ""
+        }   
+        
         imgui.EndMenu()
       }
       imgui.EndMenuBar()
@@ -75,6 +59,6 @@ menu_bar :: proc(p_open: ^bool, io: ^imgui.IO, files_info: ^[dynamic]FileInfo) {
   
 
   if show_sys_info != false {
-    u.sys_info(io)
+    sys_info(io)
   }
 }

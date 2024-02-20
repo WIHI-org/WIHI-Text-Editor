@@ -1,4 +1,4 @@
-package utils
+package components
 
 import si "core:sys/info"
 
